@@ -8,8 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name="categoria")
@@ -22,6 +22,7 @@ public class Categoria {
     private String nombre;
     
     @ManyToMany(mappedBy = "categorias")
+    @JsonBackReference
     private Set<Asociados> asociados;
 
     public Categoria() {
@@ -58,7 +59,7 @@ public class Categoria {
 
 	@Override
 	public String toString() {
-		return "Categoria [id=" + id + ", nombre=" + nombre + ", asociados=" + asociados + "]";
+	    return "Categoria{id=" + id + ", asociados=" + (asociados != null ? asociados.size() : 0) + "}";
 	}
 	
 	

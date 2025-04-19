@@ -65,7 +65,6 @@ public class FirmaServiceImpl extends ResponseEntityExceptionHandler implements 
 	@Override
 	public Respuesta delete(Long id) {
 		respuesta = new Respuesta();
-		System.out.println(id);
 		try {
 			Firma firma = firmaRepository.findById(id).get();
 			firmaRepository.deleteById(id);

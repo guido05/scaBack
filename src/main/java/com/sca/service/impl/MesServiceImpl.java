@@ -65,7 +65,6 @@ public class MesServiceImpl extends ResponseEntityExceptionHandler implements Me
 	@Override
 	public Respuesta delete(Long id) {
 		respuesta = new Respuesta();
-		System.out.println(id);
 		try {
 			Mes mes = mesRepository.findById(id).get();
 			mesRepository.deleteById(id);

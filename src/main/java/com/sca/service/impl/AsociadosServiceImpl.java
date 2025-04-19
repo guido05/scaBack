@@ -1,10 +1,15 @@
 package com.sca.service.impl;
 
-import com.sca.model.DTO.AsociadoDTO;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.support.NullValue;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,18 +20,15 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.sca.model.Asociados;
+import com.sca.model.Categoria;
 import com.sca.model.Respuesta;
+import com.sca.model.User;
+import com.sca.model.DTO.AsociadoDTO;
+import com.sca.model.DTO.AsociadoRequestDTO;
 import com.sca.repository.AsociadosRepository;
+import com.sca.repository.CategoriaRepository;
+import com.sca.repository.UserRepository;
 import com.sca.service.AsociadosService;
-
-import lombok.extern.slf4j.Slf4j;
-
-import javax.validation.constraints.Null;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class AsociadosServiceImpl extends ResponseEntityExceptionHandler implements AsociadosService {
@@ -35,6 +37,12 @@ public class AsociadosServiceImpl extends ResponseEntityExceptionHandler impleme
 	
 	@Autowired
 	AsociadosRepository asociadosRepository;
+	
+	@Autowired
+	CategoriaRepository categoriaRepository;
+	
+	@Autowired
+	UserRepository userRepository;
 
 	Respuesta respuesta;
 
@@ -49,6 +57,7 @@ public class AsociadosServiceImpl extends ResponseEntityExceptionHandler impleme
 			respuesta.setCodigo("200");
 			respuesta.setStatus("Ok");
 			respuesta.setDescripcion("Se agrego un asociado");
+			crearUser(asociados);
 			respuesta.setData(asociadosRepository.save(asociados));
 		} catch (Exception e) {
 			respuesta.setCodigo(String.valueOf(HttpStatus.BAD_REQUEST.value()));
@@ -73,14 +82,16 @@ public class AsociadosServiceImpl extends ResponseEntityExceptionHandler impleme
 	@Override
 	public Respuesta delete(Long id) {
 		respuesta = new Respuesta();
-		System.out.println(id);
 		try {
-			Asociados asociados = asociadosRepository.findById(id).get();
-			asociadosRepository.deleteById(id);
+			Optional<Asociados> asociados = asociadosRepository.findById(id);
 			respuesta.setCodigo("200");
 			respuesta.setStatus("Ok");
 			respuesta.setDescripcion("Se elimino un asociado");
-			respuesta.setData(asociados);
+			respuesta.setData("");
+			asociados.get().setActivo(0);
+			asociadosRepository.save(asociados.get());
+			//asociadosRepository.deleteById(id);
+			//userRepository.deleteByDni(asociados.get().getDocumento());
 		} catch (Exception e) {
 			respuesta.setCodigo("400");
 			respuesta.setStatus("Error");
@@ -179,5 +190,67 @@ public class AsociadosServiceImpl extends ResponseEntityExceptionHandler impleme
 		}
 
 		return new ResponseEntity<Object>(respuesta, null, HttpStatus.CREATED);
+	}
+	
+	public Asociados convertToAsociando(AsociadoRequestDTO dto) {
+		Asociados asociado = new Asociados();
+		asociado.setId(dto.getId());
+        asociado.setNombre(dto.getNombre());
+        asociado.setApellido(dto.getApellido());
+        asociado.setDocumento(dto.getDocumento());
+        asociado.setLegajo(dto.getLegajo());
+        asociado.setTelefono(dto.getTelefono());
+        asociado.setActivo(dto.getActivo());
+        // Convertir IDs a entidades
+		System.out.println(categoriaRepository.findById(Long.valueOf(dto.getCategorias().get(0))));
+        Set<Categoria> categorias = dto.getCategorias().stream()
+                .map(id -> categoriaRepository.findById(id)
+                        .orElseThrow(() -> new RuntimeException("Categoría no encontrada: " + id)))
+                .collect(Collectors.toSet());
+
+        asociado.setCategorias(categorias);
+        
+        return asociado;
+	}
+	
+	private void crearUser(Asociados asociado) throws Exception {
+		Optional<User> userOptional = userRepository.findByDni(asociado.getDocumento());
+		if (userRepository.findByDni(asociado.getDocumento()).isPresent()) {
+			User user = new User();
+			user.setId(userOptional.get().getId());
+			user.setCodigo(asociado.getLegajo());
+			user.setDni(asociado.getDocumento());
+			userRepository.save(user);
+			throw new Exception("Ya existe el documento en la base de datos. Se actualizaron los datos del user");
+		}else {
+			User user = new User();
+			user.setCodigo(asociado.getLegajo());
+			user.setDni(asociado.getDocumento());
+			userRepository.save(user);
+		}
+			
+		
+	}
+
+	@Override
+	public Respuesta activeAsociado(Long id) {
+		respuesta = new Respuesta();
+		try {
+			Optional<Asociados> asociados = asociadosRepository.findById(id);
+			respuesta.setCodigo("200");
+			respuesta.setStatus("Ok");
+			respuesta.setDescripcion("Se activo un asociado");
+			respuesta.setData("");
+			asociados.get().setActivo(1);
+			asociadosRepository.save(asociados.get());
+			//asociadosRepository.deleteById(id);
+			//userRepository.deleteByDni(asociados.get().getDocumento());
+		} catch (Exception e) {
+			respuesta.setCodigo("400");
+			respuesta.setStatus("Error");
+			respuesta.setDescripcion("No se pudo activar el asociado");
+			respuesta.setData(e.getMessage());
+		}
+		return respuesta;
 	}
 }

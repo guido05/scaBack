@@ -1,11 +1,7 @@
 package com.sca.service.impl;
 
-import com.sca.model.Respuesta;
-import com.sca.model.SueldoBasico;
-import com.sca.model.User;
-import com.sca.repository.UserRepository;
-import com.sca.service.UserService;
-import lombok.extern.slf4j.Slf4j;
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +13,11 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import com.sca.model.Respuesta;
+import com.sca.model.User;
+import com.sca.repository.UserRepository;
+import com.sca.service.UserService;
 
 
 @Service
@@ -63,7 +64,6 @@ public class UserServiceImpl extends ResponseEntityExceptionHandler implements U
     @Override
     public Respuesta delete(Long id) {
         respuesta = new Respuesta();
-        System.out.println(id);
         try {
             User user = userRepository.findById(id).get();
             userRepository.deleteById(id);
@@ -141,4 +141,9 @@ public class UserServiceImpl extends ResponseEntityExceptionHandler implements U
 
         return new ResponseEntity<Object>(respuesta, null, HttpStatus.CREATED);
     }
+
+	@Override
+	public Optional<User> findByDni(String dni) {
+		return userRepository.findByDni(dni);
+	}
 }

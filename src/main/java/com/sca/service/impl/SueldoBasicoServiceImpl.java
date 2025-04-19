@@ -63,7 +63,6 @@ public class SueldoBasicoServiceImpl extends ResponseEntityExceptionHandler impl
 	@Override
 	public Respuesta delete(Long id) {
 		respuesta = new Respuesta();
-		System.out.println(id);
 		try {
 			SueldoBasico sueldoBasico = sueldoBasicoRepository.findById(id).get();
 			sueldoBasicoRepository.deleteById(id);

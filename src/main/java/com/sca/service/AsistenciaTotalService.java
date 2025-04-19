@@ -4,9 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 
-import com.sca.model.Asistencia;
 import com.sca.model.AsistenciaTotal;
-import com.sca.model.Asociados;
 import com.sca.model.Respuesta;
 
 public interface AsistenciaTotalService {

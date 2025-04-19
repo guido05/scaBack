@@ -66,7 +66,6 @@ public class CondicionServiceImpl extends ResponseEntityExceptionHandler impleme
 	@Override
 	public Respuesta delete(Long id) {
 		respuesta = new Respuesta();
-		System.out.println(id);
 		try {
 			Condicion condicion = condicionRepository.findById(id).get();
 			condicionRepository.deleteById(id);

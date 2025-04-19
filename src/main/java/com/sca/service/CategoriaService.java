@@ -1,5 +1,7 @@
 package com.sca.service;
 
+import java.util.Optional;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
@@ -17,5 +19,7 @@ public interface CategoriaService {
 	
 	public Respuesta findAll();
 	
-	public Respuesta finById(Long id);
+	public Respuesta findById(Long id);
+	
+	public Optional<Categoria> findByIdCategoria(Long id);
 }

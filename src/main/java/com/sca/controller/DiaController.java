@@ -65,7 +65,7 @@ Logger log = LoggerFactory.getLogger(String.class);
 	
 	@PutMapping(value = "/updateDia", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Actualizar un dia", notes = "Esta operación actualiza un dia a la base de datos")
-	public ResponseEntity<Object> updateDia(@RequestBody Dia dia, BindingResult bindingResult) throws BindException {
+	public ResponseEntity<Object> updateDia(@RequestBody @Validated Dia dia, BindingResult bindingResult) throws BindException {
 		return diaServiceImpl.update(dia, bindingResult);
 	}
 }

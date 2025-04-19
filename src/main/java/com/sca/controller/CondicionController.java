@@ -64,7 +64,7 @@ public class CondicionController {
 	
 	@PutMapping(value = "/updateCondicion", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Actualizar un condicion", notes = "Esta operación actualiza un condicion a la base de datos")
-	public ResponseEntity<Object> updateCondicion(Condicion condicion, BindingResult bindingResult) throws BindException {
+	public ResponseEntity<Object> updateCondicion(@RequestBody @Validated Condicion condicion, BindingResult bindingResult) throws BindException {
 		return condicionServiceImpl.update(condicion, bindingResult);
 	}
 }

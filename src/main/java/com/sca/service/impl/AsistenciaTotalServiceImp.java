@@ -13,10 +13,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.sca.model.AsistenciaTotal;
-import com.sca.model.Categoria;
 import com.sca.model.Respuesta;
 import com.sca.repository.AsistenciaTotalRepository;
-import com.sca.repository.CategoriaRepository;
 import com.sca.service.AsistenciaTotalService;
 
 @Service

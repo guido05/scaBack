@@ -64,7 +64,7 @@ public class PorcentajeMesController {
 	
 	@PutMapping(value = "/updatePorcentajeMes", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Actualizar un PorcentajeMes", notes = "Esta operación actualiza un Porcentaje Mes a la base de datos")
-	public ResponseEntity<Object> updatePorcentajeMes(PorcentajeMes porcentajeMes, BindingResult bindingResult) throws BindException {
+	public ResponseEntity<Object> updatePorcentajeMes(@RequestBody @Validated PorcentajeMes porcentajeMes, BindingResult bindingResult) throws BindException {
 		return porcentajeMesServiceImpl.update(porcentajeMes, bindingResult);
 	}
 }

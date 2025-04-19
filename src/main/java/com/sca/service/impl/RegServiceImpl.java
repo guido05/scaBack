@@ -1,12 +1,5 @@
 package com.sca.service.impl;
 
-import com.sca.model.Reg;
-import com.sca.model.Respuesta;
-import com.sca.model.User;
-import com.sca.repository.RegRepository;
-import com.sca.repository.UserRepository;
-import com.sca.service.RegService;
-import com.sca.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +11,11 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import com.sca.model.Reg;
+import com.sca.model.Respuesta;
+import com.sca.repository.RegRepository;
+import com.sca.service.RegService;
 
 @Service
 public class RegServiceImpl extends ResponseEntityExceptionHandler implements RegService {
@@ -64,7 +62,6 @@ public class RegServiceImpl extends ResponseEntityExceptionHandler implements Re
     @Override
     public Respuesta delete(Long id) {
         respuesta = new Respuesta();
-        System.out.println(id);
         try {
             Reg reg = regRepository.findById(id).get();
             regRepository.deleteById(id);

@@ -22,11 +22,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sca.model.Asistencia;
 import com.sca.model.Respuesta;
+import com.sca.model.DTO.AsistenciaRequestDTO;
 import com.sca.service.impl.AsistenciaServiceImpl;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @Api(tags = "Asistencia")
@@ -36,41 +36,41 @@ public class AsistenciaController {
 Logger log = LoggerFactory.getLogger(String.class);
 	
 	@Autowired
-	AsistenciaServiceImpl AsistenciasServiceImpl;
+	AsistenciaServiceImpl asistenciasServiceImpl;
 	
 	@PostMapping(value = "/addAsistencias", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Agrega un Asistencias", notes = "Esta operación agrega un Asistencias a la base de datos")
-	public ResponseEntity<Object> addAsistencias(@RequestBody @Validated Asistencia asistencia, BindingResult bindingResult) throws BindException{
-		return AsistenciasServiceImpl.save(asistencia,bindingResult);
+	public ResponseEntity<Object> addAsistencias(@RequestBody @Validated AsistenciaRequestDTO asistencia, BindingResult bindingResult) throws BindException{
+		return asistenciasServiceImpl.save(asistenciasServiceImpl.convertToAsistencia(asistencia),bindingResult);
 	}
 	
 	@GetMapping(value = "/getAllAsistencias", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Consultar Asistenciass", notes = "Esta operación devuelve todos los Asistenciass a la base de datos")
 	public Respuesta getAllAsistenciass() {
-		return AsistenciasServiceImpl.findAll();
+		return asistenciasServiceImpl.findAll();
 	}
 	
 	@GetMapping(value = "/getByIdAsistencias/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Consultar Asistencias por id", notes = "Esta operación consulta un Asistencias por su identificador personal")
 	public Respuesta getByIdAsistencias(@PathParam("id") @PathVariable Long id) {
-		return AsistenciasServiceImpl.finById(id);
+		return asistenciasServiceImpl.finById(id);
 	}
 	
 	@DeleteMapping(value = "/deleteAsistencias/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Eliminar un Asistencias", notes = "Esta operación elimina un Asistencias de la base de datos")
 	public Respuesta deleteAsistencias(@PathParam("id") @PathVariable Long id) {
-		return AsistenciasServiceImpl.delete(id);
+		return asistenciasServiceImpl.delete(id);
 	}
 	
 	@PutMapping(value = "/updateAsistencias", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Actualizar un Asistencias", notes = "Esta operación actualiza un Asistencias a la base de datos")
-	public ResponseEntity<Object> updateAsistencias(Asistencia asistencia, BindingResult bindingResult) throws BindException {
-		return AsistenciasServiceImpl.update(asistencia, bindingResult);
+	public ResponseEntity<Object> updateAsistencias(@RequestBody @Validated AsistenciaRequestDTO asistencia, BindingResult bindingResult) throws BindException {
+		return asistenciasServiceImpl.update(asistenciasServiceImpl.convertToAsistencia(asistencia), bindingResult);
 	}
 
 	@GetMapping(value = "/findByUserAndRegAndAsociado", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Consultar Asistenciass", notes = "Esta operación devuelve todos los Asistenciass a la base de datos")
 	public Respuesta findByUserAndRegAndAsociado() {
-		return AsistenciasServiceImpl.findByUserAndRegAndAsociado();
+		return asistenciasServiceImpl.findByUserAndRegAndAsociado();
 	}
 }

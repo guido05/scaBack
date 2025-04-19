@@ -21,5 +21,7 @@ public interface AsociadosService {
 
 	public Respuesta findByUserAndReg();
 	
+	public Respuesta activeAsociado(Long id);
+	
 	
 }

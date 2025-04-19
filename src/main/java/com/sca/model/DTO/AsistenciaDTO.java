@@ -1,6 +1,6 @@
 package com.sca.model.DTO;
 
-import java.sql.Timestamp;
+import java.time.LocalDate;
 
 public class AsistenciaDTO {
     private int activo;
@@ -14,13 +14,16 @@ public class AsistenciaDTO {
     private String fecha;
     private String hora_entrada;
     private String hora_salida;
-    private String fecha_hora;
+    private LocalDate fecha_hora;
     private String condicion;
+    private String id_condicion;
+    private String id_asociado;
+    private String id_asistencia;
 
     public AsistenciaDTO() {
     }
 
-    public AsistenciaDTO(int activo, String apellido, String documento, String nombre, String legajo, String telefono, String id_firma, String codigo, String fecha, String hora_entrada, String hora_salida, String fecha_hora,String condicion) {
+    public AsistenciaDTO(int activo, String apellido, String documento, String nombre, String legajo, String telefono, String id_firma, String codigo, String fecha, String hora_entrada, String hora_salida, LocalDate fecha_hora,String condicion,String id_condicion, String id_asociado) {
         this.activo = activo;
         this.apellido = apellido;
         this.documento = documento;
@@ -34,6 +37,8 @@ public class AsistenciaDTO {
         this.hora_salida = hora_salida;
         this.fecha_hora = fecha_hora;
         this.condicion = condicion;
+        this.id_asociado = id_asociado;
+        this.id_condicion = id_condicion;
     }
 
     public int getActivo() {
@@ -124,11 +129,11 @@ public class AsistenciaDTO {
         this.hora_salida = hora_salida;
     }
 
-    public String getFecha_hora() {
+    public LocalDate getFecha_hora() {
         return fecha_hora;
     }
 
-    public void setFecha_hora(String fecha_hora) {
+    public void setFecha_hora(LocalDate fecha_hora) {
         this.fecha_hora = fecha_hora;
     }
 
@@ -139,4 +144,30 @@ public class AsistenciaDTO {
     public void setCondicion(String condicion) {
         this.condicion = condicion;
     }
+
+	public String getId_condicion() {
+		return id_condicion;
+	}
+
+	public void setId_condicion(String id_condicion) {
+		this.id_condicion = id_condicion;
+	}
+
+	public String getId_asociado() {
+		return id_asociado;
+	}
+
+	public void setId_asociado(String id_asociado) {
+		this.id_asociado = id_asociado;
+	}
+
+	public String getId_asistencia() {
+		return id_asistencia;
+	}
+
+	public void setId_asistencia(String id_asistencia) {
+		this.id_asistencia = id_asistencia;
+	}
+	
+	
 }

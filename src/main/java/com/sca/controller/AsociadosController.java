@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sca.model.Asociados;
 import com.sca.model.Respuesta;
+import com.sca.model.DTO.AsociadoRequestDTO;
 import com.sca.service.impl.AsociadosServiceImpl;
 
 import io.swagger.annotations.Api;
@@ -37,42 +37,48 @@ public class AsociadosController {
 	Logger log = LoggerFactory.getLogger(String.class);
 	
 	@Autowired
-	AsociadosServiceImpl AsociadosServiceImpl;
+	AsociadosServiceImpl asociadosServiceImpl;
 	
 	@PostMapping(value = "/addAsociados", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Agrega un Asociados", notes = "Esta operación agrega un Asociados a la base de datos")
-	public ResponseEntity<Object> addAsociados(@RequestBody @Validated Asociados asociados, BindingResult bindingResult) throws BindException{
-		return AsociadosServiceImpl.save(asociados,bindingResult);
+	public ResponseEntity<Object> addAsociados(@RequestBody @Validated AsociadoRequestDTO asociados, BindingResult bindingResult) throws BindException{
+		return asociadosServiceImpl.save(asociadosServiceImpl.convertToAsociando(asociados),bindingResult);
 	}
 	
 	@GetMapping(value = "/getAllAsociados", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Consultar Asociadoss", notes = "Esta operación devuelve todos los Asociadoss a la base de datos")
 	public Respuesta getAllAsociadoss() {
-		return AsociadosServiceImpl.findAll();
+		return asociadosServiceImpl.findAll();
 	}
 	
 	@GetMapping(value = "/getByIdAsociados/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Consultar Asociados por id", notes = "Esta operación consulta un Asociados por su identificador personal")
 	public Respuesta getByIdAsociados(@PathParam("id") @PathVariable Long id) {
-		return AsociadosServiceImpl.finById(id);
+		return asociadosServiceImpl.finById(id);
 	}
 	
 	@DeleteMapping(value = "/deleteAsociados/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Eliminar un Asociados", notes = "Esta operación elimina un Asociados de la base de datos")
 	public Respuesta deleteAsociados(@PathParam("id") @PathVariable Long id) {
-		return AsociadosServiceImpl.delete(id);
+		return asociadosServiceImpl.delete(id);
+	}
+	
+	@DeleteMapping(value = "/activeAsociados/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Activar un Asociado", notes = "Esta operación activa un Asociados de la base de datos")
+	public Respuesta activeAsociados(@PathParam("id") @PathVariable Long id) {
+		return asociadosServiceImpl.activeAsociado(id);
 	}
 	
 	@PutMapping(value = "/updateAsociados", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Actualizar un Asociados", notes = "Esta operación actualiza un Asociados a la base de datos")
-	public ResponseEntity<Object> updateAsociados(Asociados asociados, BindingResult bindingResult) throws BindException {
-		return AsociadosServiceImpl.update(asociados, bindingResult);
+	public ResponseEntity<Object> updateAsociados(@RequestBody @Validated AsociadoRequestDTO asociados, BindingResult bindingResult) throws BindException {
+		return asociadosServiceImpl.update(asociadosServiceImpl.convertToAsociando(asociados), bindingResult);
 	}
 
 	@GetMapping(value = "/getAsociadoWithUserAndReg", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Consultar User con asociados y reg", notes = "Esta operación consulta Users")
 	public Respuesta findByUserAndReg() {
-		return AsociadosServiceImpl.findByUserAndReg();
+		return asociadosServiceImpl.findByUserAndReg();
 	}
 
 }

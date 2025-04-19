@@ -65,7 +65,7 @@ Logger log = LoggerFactory.getLogger(String.class);
 	
 	@PutMapping(value = "/updateFirma", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Actualizar una firma", notes = "Esta operación actualiza una firma a la base de datos")
-	public ResponseEntity<Object> updateDia(@RequestBody Firma firma, BindingResult bindingResult) throws BindException {
+	public ResponseEntity<Object> updateDia(@RequestBody @Validated Firma firma, BindingResult bindingResult) throws BindException {
 		return firmaServiceImpl.update(firma, bindingResult);
 	}
 

@@ -1,10 +1,7 @@
 package com.sca.controller;
 
-import com.sca.model.Respuesta;
-import com.sca.model.Reg;
-import com.sca.service.impl.RegServiceImpl;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import javax.websocket.server.PathParam;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +10,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.websocket.server.PathParam;
+import com.sca.model.Reg;
+import com.sca.model.Respuesta;
+import com.sca.service.impl.RegServiceImpl;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @Api(tags = "Reg")
@@ -53,7 +63,7 @@ public class RegController {
 
     @PutMapping(value = "/updateReg", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "Actualizar un Reg", notes = "Esta operación actualiza un Reg a la base de datos")
-    public ResponseEntity<Object> updateReg(Reg reg, BindingResult bindingResult) throws BindException {
+    public ResponseEntity<Object> updateReg(@RequestBody @Validated Reg reg, BindingResult bindingResult) throws BindException {
         return regServiceImpl.update(reg, bindingResult);
     }
 }

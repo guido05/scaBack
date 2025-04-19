@@ -10,12 +10,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
 //import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sca.constantes.ExpresionRegular;
 import com.sca.validator.ValidarExpresionesRegulares;
 
@@ -28,20 +28,17 @@ public class Asociados {
     private long id;
 	
 	@Column(name="nombre")
-	@ValidarExpresionesRegulares(customMessage = "El nombre no es válido", expresionRegular = ExpresionRegular.NOMBREAPELLIDO)
 	private String nombre;
 	
-	@ValidarExpresionesRegulares(customMessage = "El apellido no es válido", expresionRegular = ExpresionRegular.NOMBREAPELLIDO)
 	@Column(name="apellido")
 	private String apellido;
 	
-	@ValidarExpresionesRegulares(customMessage="El legajo debe tener 3 digitos", expresionRegular = ExpresionRegular.LEGAJO)
 	@Column(name="legajo")
     private String legajo;
 	
-	@OneToOne
-	@JoinColumn(name="id_firma")
-    private Firma id_firma;
+	//@OneToOne
+	//@JoinColumn(name="id_firma")
+    //private Firma id_firma;
 	
 	@Column(name="documento")
 	private String documento;
@@ -52,6 +49,7 @@ public class Asociados {
         joinColumns = @JoinColumn(name = "asociado_id"), // Llave foránea de la tabla 'asociado'
         inverseJoinColumns = @JoinColumn(name = "categoria_id") // Llave foránea de la tabla 'categoria'
     )
+	@JsonManagedReference
     private Set<Categoria> categorias;
 	
 	@Column(name="activo")
@@ -65,14 +63,13 @@ public class Asociados {
 
 	public Asociados(long id, @NotBlank(message = "El nombre no puede estar en blanco") @NotNull String nombre,
 			@NotBlank(message = "El apellido no puede estar en blanco") String apellido,
-			@NotBlank(message = "El legajo no puede estar en blanco") String legajo, Firma id_firma,
+			@NotBlank(message = "El legajo no puede estar en blanco") String legajo,
 			Set<Categoria> categorias, @NotNull int activo , @NotNull String telefono,String docunmento) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.legajo = legajo;
-		this.id_firma = id_firma;
 		this.categorias = categorias;
 		this.activo = activo;
 		this.telefono = telefono;
@@ -111,14 +108,6 @@ public class Asociados {
 		this.legajo = legajo;
 	}
 
-	public Firma getId_firma() {
-		return id_firma;
-	}
-
-	public void setId_firma(Firma id_firma) {
-		this.id_firma = id_firma;
-	}
-
 	public Set<Categoria> getCategorias() {
 		return categorias;
 	}
@@ -137,9 +126,8 @@ public class Asociados {
 
 	@Override
 	public String toString() {
-		return "Asociados [id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", legajo=" + legajo
-				+ ", id_firma=" + id_firma + ", categorias=" + categorias + ", activo=" + activo + ", telefono="
-				+ telefono + "]";
+	    return "Asociados{id=" + id + ", categorias=" + (categorias != null ? categorias.size() : 0) + "}";
+
 	}
 
 	public String getTelefono() {

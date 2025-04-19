@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sca.model.Categoria;
 import com.sca.model.Respuesta;
+import com.sca.model.DTO.CategoriaRequestDTO;
 import com.sca.service.impl.CategoriaServiceImpl;
 
 import io.swagger.annotations.Api;
@@ -40,8 +41,8 @@ public class CategoriaController {
 	
 	@PostMapping(value = "/addCategoria", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Agrega una categoria", notes = "Esta operación agrega una categoria a la base de datos")
-	public ResponseEntity<Object> addCategoriae(@RequestBody @Validated Categoria categoria, BindingResult bindingResult) throws BindException{
-		return categoriaServiceImpl.save(categoria,bindingResult);
+	public ResponseEntity<Object> addCategoriae(@RequestBody @Validated CategoriaRequestDTO categoria, BindingResult bindingResult) throws BindException{
+		return categoriaServiceImpl.save(categoriaServiceImpl.converToCategoria(categoria),bindingResult);
 	}
 	
 	@GetMapping(value = "/getAllCategorias", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -53,7 +54,7 @@ public class CategoriaController {
 	@GetMapping(value = "/getByIdCategoria/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Consultar categoria por id", notes = "Esta operación consulta un categoria por su identificador personal")
 	public Respuesta getByIdCategoria(@PathParam("id") @PathVariable Long id) {
-		return categoriaServiceImpl.finById(id);
+		return categoriaServiceImpl.findById(id);
 	}
 	
 	@DeleteMapping(value = "/deleteCategoria/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -64,7 +65,7 @@ public class CategoriaController {
 	
 	@PutMapping(value = "/updateCategoria", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Actualizar un categoria", notes = "Esta operación actualiza un categoria a la base de datos")
-	public ResponseEntity<Object> updateCategoria(@RequestBody Categoria categoria, BindingResult bindingResult) throws BindException {
-		return categoriaServiceImpl.update(categoria, bindingResult);
+	public ResponseEntity<Object> updateCategoria(@RequestBody @Validated CategoriaRequestDTO categoria, BindingResult bindingResult) throws BindException {
+		return categoriaServiceImpl.update(categoriaServiceImpl.converToCategoria(categoria), bindingResult);
 	}
 }

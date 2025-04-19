@@ -1,5 +1,7 @@
 package com.sca.service.impl;
 
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.sca.model.Categoria;
 import com.sca.model.Respuesta;
+import com.sca.model.DTO.CategoriaRequestDTO;
 import com.sca.repository.CategoriaRepository;
 import com.sca.service.CategoriaService;
 
@@ -65,14 +68,13 @@ public class CategoriaServiceImpl extends ResponseEntityExceptionHandler impleme
 	@Override
 	public Respuesta delete(Long id) {
 		respuesta = new Respuesta();
-		System.out.println(id);
 		try {
 			Categoria categoria = categoriaRepository.findById(id).get();
-			categoriaRepository.deleteById(id);
 			respuesta.setCodigo("200");
 			respuesta.setStatus("Ok");
 			respuesta.setDescripcion("Se elimino una Categoria");
 			respuesta.setData(categoria);
+			categoriaRepository.deleteById(id);
 		} catch (Exception e) {
 			respuesta.setCodigo("400");
 			respuesta.setStatus("Error");
@@ -100,7 +102,7 @@ public class CategoriaServiceImpl extends ResponseEntityExceptionHandler impleme
 	}
 
 	@Override
-	public Respuesta finById(Long id) {
+	public Respuesta findById(Long id) {
 		respuesta = new Respuesta();
 		try {
 			respuesta.setCodigo("200");
@@ -115,6 +117,8 @@ public class CategoriaServiceImpl extends ResponseEntityExceptionHandler impleme
 		}
 		return respuesta;
 	}
+	
+	
 
 	@Override
 	public ResponseEntity<Object> update(Categoria categoria, BindingResult bindingResult) throws BindException {
@@ -142,5 +146,18 @@ public class CategoriaServiceImpl extends ResponseEntityExceptionHandler impleme
 		}
 
 		return new ResponseEntity<Object>(respuesta, null, HttpStatus.CREATED);
+	}
+
+	@Override
+	public Optional<Categoria> findByIdCategoria(Long id) {
+		System.out.println(categoriaRepository.findById(id));
+		return categoriaRepository.findById(id);
+	}
+	
+	public Categoria converToCategoria(CategoriaRequestDTO categoriaRequestDto) {
+		Categoria categoria = new Categoria();
+		categoria.setId(categoriaRequestDto.getId());
+		categoria.setNombre(categoriaRequestDto.getNombre());
+		return categoria;
 	}
 }

@@ -5,7 +5,6 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 
 import com.sca.model.Asistencia;
-import com.sca.model.Asociados;
 import com.sca.model.Respuesta;
 
 public interface AsistenciaService {

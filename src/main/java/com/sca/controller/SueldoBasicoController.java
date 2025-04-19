@@ -26,7 +26,6 @@ import com.sca.service.impl.SueldoBasicoServiceImpl;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @Api(tags = "SueldoBasico")
@@ -63,7 +62,7 @@ public class SueldoBasicoController {
 	
 	@PutMapping(value = "/updateSueldoBasico", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Actualizar un SueldoBasico", notes = "Esta operación actualiza un SueldoBasico a la base de datos")
-	public ResponseEntity<Object> updateSueldoBasico(SueldoBasico sueldoBasico, BindingResult bindingResult) throws BindException {
+	public ResponseEntity<Object> updateSueldoBasico(@RequestBody @Validated SueldoBasico sueldoBasico, BindingResult bindingResult) throws BindException {
 		return sueldoBasicoServiceImpl.update(sueldoBasico, bindingResult);
 	}
 }

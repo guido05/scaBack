@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.sca.model.DTO.AsistenciaDTO;
+
 @Entity
 @Table(name="asistencia")
 public class Asistencia {
@@ -20,17 +22,17 @@ public class Asistencia {
     private long id;
 	
 
-	@OneToOne
-	@JoinColumn(name = "id_condicion")
+	@OneToOne(optional = true)
+	@JoinColumn(name = "id_condicion", nullable = true)
     private Condicion id_condicion;
 	
-	@OneToOne
-	@JoinColumn(name = "id_asociado")
+	@OneToOne(optional = true)
+	@JoinColumn(name = "id_asociado",nullable = true)
 	private Asociados id_asociado;
 	
-	@OneToOne
-	@JoinColumn(name = "id_dia")
-	private Dia id_dia;
+	/*@OneToOne(optional = true)
+	@JoinColumn(name = "id_dia",nullable = true)
+	private Dia id_dia;*/
 	
 	@Column(name="horaEntrada")
     private String horaEntrada;
@@ -50,13 +52,13 @@ public class Asistencia {
     public Asistencia() {
     }
 
-	public Asistencia(long id, Condicion id_condicion, Asociados id_asociado, Dia id_dia, String horaEntrada,
+	public Asistencia(long id, Condicion id_condicion, Asociados id_asociado, String horaEntrada,
 			String horaSalida, LocalDate fecha, String observacion, String subtotal) {
 		super();
 		this.id = id;
 		this.id_condicion = id_condicion;
 		this.id_asociado = id_asociado;
-		this.id_dia = id_dia;
+		//this.id_dia = id_dia;
 		this.horaEntrada = horaEntrada;
 		this.horaSalida = horaSalida;
 		this.fecha = fecha;
@@ -86,14 +88,6 @@ public class Asistencia {
 
 	public void setId_asociado(Asociados id_asociado) {
 		this.id_asociado = id_asociado;
-	}
-
-	public Dia getId_dia() {
-		return id_dia;
-	}
-
-	public void setId_dia(Dia id_dia) {
-		this.id_dia = id_dia;
 	}
 
 	public String getHoraEntrada() {
@@ -135,6 +129,16 @@ public class Asistencia {
 	public void setSubtotal(String subtotal) {
 		this.subtotal = subtotal;
 	}
-
-   
+	
+	public static Asistencia convertToAasistencia(AsistenciaDTO asistenciaDTO,Asociados asociado,Condicion condicion) {
+		Asistencia asistencia = new Asistencia();
+		asistencia.setFecha(asistenciaDTO.getFecha_hora());
+		asistencia.setHoraEntrada(asistenciaDTO.getHora_entrada());
+		asistencia.setHoraSalida(asistenciaDTO.getHora_salida());
+		if(asociado != null)
+			asistencia.setId_asociado(asociado);
+		if(condicion != null)
+			asistencia.setId_condicion(condicion);
+		return asistencia;
+	}
 }

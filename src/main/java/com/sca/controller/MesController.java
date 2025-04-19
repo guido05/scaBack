@@ -66,7 +66,7 @@ public class MesController {
 	
 	@PutMapping(value = "/updateMes", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Actualizar un mes", notes = "Esta operación actualiza un mes a la base de datos")
-	public ResponseEntity<Object> updateMes(@RequestBody Mes mes, BindingResult bindingResult) throws BindException {
+	public ResponseEntity<Object> updateMes(@RequestBody @Validated Mes mes, BindingResult bindingResult) throws BindException {
 		return mesServiceImpl.update(mes, bindingResult);
 	}
 }

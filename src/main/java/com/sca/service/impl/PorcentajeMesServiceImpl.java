@@ -65,7 +65,6 @@ public class PorcentajeMesServiceImpl extends ResponseEntityExceptionHandler imp
 	@Override
 	public Respuesta delete(Long id) {
 		respuesta = new Respuesta();
-		System.out.println(id);
 		try {
 			PorcentajeMes porcentajeMes = porcentajeMesRepository.findById(id).get();
 			porcentajeMesRepository.deleteById(id);
